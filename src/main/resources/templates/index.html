@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div>
+    <th:block th:each="msg : ${messages}">
+        <h1 th:text="${msg}"></h1>
+    </th:block>
+    <br/>
+    <form method="get" th:action="@{http://localhost:8080/admin/users}">
+        <button type="submit">Показать список пользователей</button>
+    </form>
+    <br/>
+    <form method="get" th:action="@{http://localhost:8080/user}">
+        <button type="submit">Показать страницу пользователя</button>
+    </form>
+</div>
+</body>
+</html>
