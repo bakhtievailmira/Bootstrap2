@@ -29,11 +29,6 @@ public class AdminController {
     }
 
 
-    @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user) {
-        return "new";
-    }
-
     @PostMapping()
     public String creatUser(@ModelAttribute("user") User user) {
         userService.save(user);
@@ -41,17 +36,11 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String showUserList(Model model,@ModelAttribute("newUser") User user, Principal principal) {
+    public String showUserList(Model model, Principal principal, @ModelAttribute("newUser") User newUser) {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("listroles", Role.values());
         model.addAttribute("authorise_user", userService.loadUserByUsername(principal.getName()));
         return "admin";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String showUpdateForm(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
-        return "edit";
     }
 
     @PutMapping("/{id}")
@@ -77,9 +66,10 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    public String showUser(@PathVariable("id") int id, Model model) {
+    public String editUser(@PathVariable("id") int id, Model model, Principal principal) {
         model.addAttribute("user", userService.findById(id));
         model.addAttribute("listroles", Role.values());
+        model.addAttribute("authorise_user", userService.loadUserByUsername(principal.getName()));
         return "show";
     }
 

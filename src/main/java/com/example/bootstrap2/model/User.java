@@ -31,6 +31,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "active")
+    private boolean active;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -40,6 +43,7 @@ public class User implements UserDetails {
     public User() {
         this.password = "user";
         this.roles = Collections.singleton(Role.ROLE_USER);
+        this.active=true;
     }
 
     ;
@@ -51,8 +55,11 @@ public class User implements UserDetails {
         this.userName = userName;
         this.password = "user";
         this.roles = Collections.singleton(Role.ROLE_USER);
+        this.active=true;
 
     }
+
+
 
     public User(String name, String surname, int age, String userName, String password) {
         this.name = name;
@@ -61,6 +68,7 @@ public class User implements UserDetails {
         this.userName = userName;
         this.password = password;
         this.roles = Collections.singleton(Role.ROLE_USER);
+        this.active=true;
 
     }
 
@@ -107,7 +115,14 @@ public class User implements UserDetails {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = Collections.singleton(Role.ROLE_USER);
-        ;
+
+    }
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 

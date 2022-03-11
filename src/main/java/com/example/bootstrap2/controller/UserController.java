@@ -10,8 +10,6 @@ import java.security.Principal;
 
 
 @Controller
-
-
 public class UserController {
 
     private UserService userService;
@@ -25,7 +23,6 @@ public class UserController {
         model.addAttribute("user", userService.loadUserByUsername(principal.getName()));
         model.addAttribute("authorise_user", userService.loadUserByUsername(principal.getName()));
         model.addAttribute("listroles", Role.values());
-        model.addAttribute("admin", true);
         return "show";
     }
 
