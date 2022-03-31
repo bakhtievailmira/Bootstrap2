@@ -15,23 +15,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "surname")
     private String surname;
-
-    @Column(name = "age")
     private int age;
-
-    @Column(name = "username")
-    private String userName;
-
-    @Column(name = "password")
+    private String email;
     private String password;
-
-    @Column(name = "active")
     private boolean active;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -41,34 +29,39 @@ public class User implements UserDetails {
 
 
     public User() {
-        this.password = "user";
-        this.roles = Collections.singleton(Role.ROLE_USER);
-        this.active=true;
-    }
-
-    ;
-
-    public User(String name, String surname, int age, String userName) {
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-        this.userName = userName;
-        this.password = "user";
-        this.roles = Collections.singleton(Role.ROLE_USER);
-        this.active=true;
-
+        this.active = true;
     }
 
 
 
-    public User(String name, String surname, int age, String userName, String password) {
+    public User(String name, String surname, int age, String userName, String password, Set <Role> roles) {
         this.name = name;
         this.surname = surname;
         this.age = age;
-        this.userName = userName;
+        this.email = userName;
+        this.password = password;
+        this.roles = roles;
+        this.active = true;
+    }
+
+
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public User(String name, String surname, int age, String email, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.email = email;
         this.password = password;
         this.roles = Collections.singleton(Role.ROLE_USER);
-        this.active=true;
+        this.active = true;
 
     }
 
@@ -96,6 +89,10 @@ public class User implements UserDetails {
         this.age = age;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public long getId() {
         return id;
     }
@@ -104,8 +101,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String userName) {
-        this.userName = userName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 
@@ -113,10 +110,11 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = Collections.singleton(Role.ROLE_USER);
+    public void setRoles(Set <Role> roles) {
+        this.roles = roles;
 
     }
+
     public boolean isActive() {
         return active;
     }
@@ -138,7 +136,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override
