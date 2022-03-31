@@ -4,15 +4,10 @@ package com.example.bootstrap2.controller;
 import com.example.bootstrap2.model.Role;
 import com.example.bootstrap2.model.User;
 import com.example.bootstrap2.service.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 
@@ -30,7 +25,11 @@ public class AdminController {
 
 
     @PostMapping()
-    public String creatUser(@ModelAttribute("user") User user) {
+    public String creatUser(@ModelAttribute("user") User user, Model model) {
+        if (userService.loadUserByUsername(user.getEmail()) != null) {
+            model.addAttribute("message", "User exists");
+            return "admin";
+        }
         userService.save(user);
         return "redirect:/admin";
     }
@@ -56,14 +55,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/logout")
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:/index";
-    }
 
     @GetMapping("/{id}")
     public String editUser(@PathVariable("id") int id, Model model, Principal principal) {

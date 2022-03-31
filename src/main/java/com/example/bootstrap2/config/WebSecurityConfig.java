@@ -9,11 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private  SuccessUserHandler successUserHandler;
+    private SuccessUserHandler successUserHandler;
     private UserService userService;
 
     private AuthenticationManagerBuilder auth;
@@ -36,17 +35,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and()
-                    .formLogin().successHandler(successUserHandler)
-                    .permitAll()
+                .formLogin().successHandler(successUserHandler)
+                .permitAll()
                 .and()
-                    .logout()
-                    .permitAll()
-                    .logoutSuccessUrl("/");
+                .logout()
+                .permitAll();
+
+
     }
 
-   @Autowired
-  protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-     auth.userDetailsService(userService).passwordEncoder(NoOpPasswordEncoder.getInstance());
-   }
+    @Autowired
+    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+    }
 
 }
